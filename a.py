@@ -4,5 +4,6 @@ from sklearn.datasets import load_iris
 if __name__ == "__main__":
     x, y = load_iris(return_X_y=True)
 
-    for i in Splitter.VALID_MODEL:
-        DLT(x, y, i())
+    for i in Utils.VALID_MODEL.value:
+        print(DLT(x, y, i(), is_trained=False, verbose=True))
+        break

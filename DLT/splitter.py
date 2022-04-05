@@ -1,19 +1,13 @@
-import numpy as np
-from sklearn.ensemble import RandomForestRegressor, RandomForestClassifier
-from sklearn.tree import DecisionTreeClassifier, DecisionTreeRegressor
-from sklearn.linear_model import LinearRegression, LogisticRegression
-from sklearn.svm import SVC, SVR
-from .utils import Utils
-from .Exceptions import *
 import copy
+from .Exceptions import *
+from .utils import Utils
+import logging
 
 
 class Splitter:
-    VALID_CLASSIFIERS = (RandomForestClassifier, DecisionTreeClassifier, SVC)
-    VALID_REGRESSORS = (RandomForestRegressor, DecisionTreeRegressor, LinearRegression, LogisticRegression, SVR)
-    VALID_MODEL = np.array((VALID_REGRESSORS + VALID_CLASSIFIERS))
 
-    def __init__(self, model: object, batch_size: int):
+    def __init__(self, model: object, batch_size: int, logger: logging):
+        self.logger = logger
         self._model = model
         self._batch_size = batch_size
         self._batch_list = tuple()
@@ -23,23 +17,29 @@ class Splitter:
         self._bootstrap()
 
     def _batch_model(self, args):
-        args["__init__"] = self.model.__init__
-        batch = type("Batch", (self.model.__class__,), args)
-        self._base_model = batch()
+        args["__init__"] = self.model.__init__  # Adding the __init__ of the base_model
+        batch = type("Batch", (self.model.__class__,), args)  # Creating a super class with extra methods and attributes
+        self.logger.info("Batch model has been created")
+        self._base_model = batch()  # Assigning the batch -- function to base_model
 
     def _find_the_base_class(self) -> None:
-        for i in self.VALID_MODEL:
+        for i in Utils.VALID_MODEL.value:
             if self.model.__class__ is i:
                 self._batch_model(vars(self.model))
+                self.logger.info("Retrieving the attributes and methods from the given model")
                 self._model_class = Utils.CLASSIFIER if \
-                    self.model.__class__ in [j.__class__ for j in self.VALID_CLASSIFIERS] else Utils.REGRESSOR
+                    self.model.__class__ in [j.__class__ for j in Utils.VALID_CLASSIFIERS.value] else Utils.REGRESSOR
+                self.logger.info("Model base class has been identified")
                 return
+        self.logger.error("There is no valid ml model for DLT")
         raise InvalidMachineLearningModel(
-            f"{self.model.__class__} is not a valid ML model for DLT.\nValid models are {self.VALID_MODEL}"
+            f"{self.model.__class__} is not a valid ML model for DLT.\nValid models are {Utils.VALID_MODEL.value}"
         )
 
     def _bootstrap(self) -> None:
-        self._batch_list = ((batches, copy.deepcopy(self.base_model)) for batches in range(self.batch_size))
+        self._batch_list = ((batches, copy.deepcopy(self.base_model)) for batches in
+                            range(self.batch_size))  # Deep copying in order avoid overwriting in all the batches
+        self.logger.info("Batch list has been generated with the refined batch models")
 
     @property
     def model(self):
