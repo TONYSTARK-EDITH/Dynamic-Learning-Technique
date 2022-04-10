@@ -1,0 +1,76 @@
+Metadata-Version: 2.1
+Name: DLT
+Version: 0.0.1
+Summary: Dynamic learning technique allows the user to train a model in batch wise manner
+Home-page: https://github.com/TONYSTARK-EDITH/Dynamic-Learning-Technique
+Author: Tony Stark
+Author-email: manthirajak@gmail.com
+License: UNKNOWN
+Keywords: DLT,Dynamic Learning Technique,python
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.0
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# Dynamic Learning Technique
+
+Dynamic learning technique allows the user to train a model in batch wise manner
+
+
+## Installation
+
+Use the package manager [pip](https://pip.pypa.io/en/stable/) to install Exchange Rate Api
+
+```bash
+pip install dlt
+```
+
+## Usage
+
+The DLT takes 2 argument with 6 optional arguments
+
+```python
+# Initialize an object to DLT
+from DLT import *
+from sklearn.tree import DecisionTreeRegressor
+
+DLT(['X dataset'], ['Y dataset'], DecisionTreeRegressor())
+```
+
+There are 7 methods
+
+<ol>
+    <li>
+      get_latest
+    </li>
+    <LI>get_pair_conversion</LI>
+    <li>get_codes</li>
+    <li>get_quota</li>
+    <li>get_enriched_data</li>
+    <li>get_historical_data</li>
+    <li>search</li>
+</ol>
+
+## Features
+
+- ## **Exception**
+  New exceptions has been included
+    - NoArgumentException
+    - InvalidMachineLearningModel
+    - InvalidDatasetProvided
+
+Test cases has been included
+
+## Contributing
+
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+Please make sure to update tests as appropriate.
+
+## License
+
+[MIT](https://github.com/TONYSTARK-EDITH/ExchangeRateApi/blob/ae5048945f9c910579eeb6f4e7db2734c017bc4e/LICENSE)
+

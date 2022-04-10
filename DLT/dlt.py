@@ -9,7 +9,7 @@ LOGGER = logging.getLogger("log")
 LOGGER.setLevel(logging.DEBUG)
 
 
-class DLT:
+class DLT(object):
     def __init__(self, x, y, model_object: object = None, model_file: str = None,
                  batch: int = Utils.BATCH.value,
                  shuffle: bool = False, verbose: bool = False, is_trained: bool = True) -> None:
@@ -53,6 +53,16 @@ class DLT:
         self._sub_hash_map = dict()
         self._shuffle = shuffle
         self._refined_model = copy.deepcopy(self.model)
+        try:
+            if len(x) == 0 or len(y) == 0:
+                LOGGER.error("Value error -- The provided dataset contains no values")
+                raise InvalidDatasetProvided("The provided dataset contains no values")
+        except Exception:
+            LOGGER.error(
+                "Value error -- The provided dataset is not of the correct data type.Please provide an numpy array or "
+                "values")
+            raise InvalidDatasetProvided(
+                "The provided dataset is not of the correct data type.Please provide an numpy array or values")
         self._X_train, self._X_test, self._y_train, self._y_test = train_test_split(
             x, y, train_size=Utils.TRAIN_SIZE.value,
             random_state=Utils.RANDOM_STATE.value
@@ -114,6 +124,12 @@ class DLT:
             if batch_acc > self.accuracy:
                 self._accuracy = batch_acc
                 self._refined_model = batch_model
+
+    def __hash__(self):
+        return hash(self.refined_model)
+
+    def __bytes__(self):
+        return bytes(self.hash_map)
 
     @property
     def batch_size(self) -> int:
