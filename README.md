@@ -8,7 +8,7 @@ Dynamic learning technique allows the user to train a model in batch wise manner
 Use the package manager [pip](https://pip.pypa.io/en/stable/) to install Exchange Rate Api
 
 ```bash
-pip install dlt
+pip install Dynamic-Learning-Technique
 ```
 
 ## Usage
