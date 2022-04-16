@@ -31,6 +31,10 @@ DLT(['X dataset'], ['Y dataset'], DecisionTreeRegressor())
     - InvalidMachineLearningModel
     - InvalidDatasetProvided
 
+
+- ## **Parallel Processing**
+  -  The splitting process has been made an asynchronous process in order to increase the speed of the splitting process
+
 Test cases has been included
 
 ## Contributing

@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="Dynamic Learning Technique",
-    version="0.1",
+    version="0.2",
     author="Tony Stark",
     author_email="manthirajak@gmail.com",
     description="Dynamic learning technique allows the user to train a model in batch wise manner",
@@ -16,6 +16,7 @@ setuptools.setup(
     keywords="DLT,Dynamic Learning Technique,python",
     install_requires=[
         'numpy',
+        'asyncio',
         'scikit-learn',
     ],
     classifiers=[
