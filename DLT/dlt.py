@@ -71,7 +71,6 @@ class DLT(object):
 
         self._accuracy = 0
         self._is_trained = is_trained
-        self._split_models_into_batches()
         self._base_acc = 0
         self._count_per_batch = count_per_batch
         if self.is_trained:
@@ -79,6 +78,7 @@ class DLT(object):
                 self.x_test)) if self.model.__class__ in Utils.VALID_REGRESSORS.value else accuracy_score(
                 y_true=self.y_test, y_pred=self.model.predict(self.x_test))
             LOGGER.info("Base accuracy has been calculated")
+        self._split_models_into_batches()
 
     def _render_model_file(self):
         LOGGER.info("Ml file deserialization process started")
