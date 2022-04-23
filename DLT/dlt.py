@@ -12,7 +12,8 @@ LOGGER.setLevel(logging.DEBUG)
 class DLT(object):
     def __init__(self, x, y, model_object: object = None, model_file: str = None,
                  batch: int = Utils.BATCH.value,
-                 shuffle: bool = False, verbose: bool = False, is_trained: bool = True) -> None:
+                 shuffle: bool = False, verbose: bool = False, is_trained: bool = True,
+                 count_per_batch: int = 4) -> None:
         """
         Initialize the DLT object with multiple arguments in it
         :param x: Any object preferable of numpy array
@@ -72,6 +73,7 @@ class DLT(object):
         self._is_trained = is_trained
         self._split_models_into_batches()
         self._base_acc = 0
+        self._count_per_batch = count_per_batch
         if self.is_trained:
             self._base_acc = r2_score(y_true=self.y_test, y_pred=self.model.predict(
                 self.x_test)) if self.model.__class__ in Utils.VALID_REGRESSORS.value else accuracy_score(
@@ -106,8 +108,12 @@ class DLT(object):
         LOGGER.info("Batch models has been stored in the hash map")
         for i in range(self.batch_size):
             LOGGER.info(f"Batch - {i + 1} training has been started")
+            count = 0
             for x, y in self._mini_batches_training():
                 self.hash_map[i].fit(x, y)
+                count += 1
+                if count >= self.count_per_batch:
+                    break
             if obj.model_class == Utils.REGRESSOR:
                 self.hash_map[i] = (
                     self.hash_map[i], r2_score(y_true=self.y_test, y_pred=self.hash_map[i].predict(self.x_test))
@@ -183,6 +189,10 @@ class DLT(object):
     def is_trained(self):
         return self._is_trained
 
+    @property
+    def count_per_batch(self):
+        return self._count_per_batch
+
     @batch_size.setter
     def batch_size(self, size):
         self._batch_size = size
@@ -241,6 +251,10 @@ class DLT(object):
     @is_trained.deleter
     def is_trained(self):
         del self._is_trained
+
+    @count_per_batch.deleter
+    def count_per_batch(self):
+        del self._count_per_batch
 
     def __str__(self):
         if self.is_trained:
