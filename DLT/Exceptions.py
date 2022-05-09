@@ -11,3 +11,8 @@ class InvalidMachineLearningModel(AssertionError):
 class InvalidDatasetProvided(ValueError):
     def __init__(self, msg):
         super(ValueError, self).__init__(msg)
+
+
+class BatchCountGreaterThanBatchSize(ValueError):
+    def __init__(self, msg):
+        super(ValueError, self).__init__(msg)

@@ -50,6 +50,10 @@ class DLT(object):
             self._render_model_file()
         else:
             self._model = model_object
+        if batch < count_per_batch:
+            LOGGER.error("Value error -- Please make sure the count_per_batch is less than or equal to the batch size")
+            raise BatchCountGreaterThanBatchSize(
+                "Please make sure the count_per_batch is less than or equal to the batch size")
         self._batch_size = batch
         self._sub_hash_map = dict()
         self._shuffle = shuffle
@@ -73,12 +77,12 @@ class DLT(object):
         self._is_trained = is_trained
         self._base_acc = 0
         self._count_per_batch = count_per_batch
-        self._split_models_into_batches()
         if self.is_trained:
             self._base_acc = r2_score(y_true=self.y_test, y_pred=self.model.predict(
                 self.x_test)) if self.model.__class__ in Utils.VALID_REGRESSORS.value else accuracy_score(
                 y_true=self.y_test, y_pred=self.model.predict(self.x_test))
             LOGGER.info("Base accuracy has been calculated")
+        self._split_models_into_batches()
 
     def _render_model_file(self):
         LOGGER.info("Ml file deserialization process started")

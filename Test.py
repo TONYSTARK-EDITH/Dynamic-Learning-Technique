@@ -1,7 +1,7 @@
 import unittest
 
+from xgboost import XGBClassifier
 from sklearn.linear_model import Ridge
-
 from DLT import *
 
 
@@ -14,10 +14,13 @@ class MyTestCase(unittest.TestCase):
             DLT(self.SAMPLE_X, self.SAMPLE_Y)
 
         with self.assertRaises(InvalidMachineLearningModel):
-            DLT(self.SAMPLE_X, self.SAMPLE_Y, Ridge())
+            DLT(self.SAMPLE_X, self.SAMPLE_Y, XGBClassifier(), is_trained=False)
 
         with self.assertRaises(InvalidDatasetProvided):
             DLT([], [], Ridge())
+
+        with self.assertRaises(BatchCountGreaterThanBatchSize):
+            DLT(self.SAMPLE_X, self.SAMPLE_Y, Ridge(), batch=10, count_per_batch=11)
 
 
 if __name__ == '__main__':

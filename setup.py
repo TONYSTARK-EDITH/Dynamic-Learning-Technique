@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="Dynamic Learning Technique",
-    version="0.2.2",
+    version="0.2.3",
     author="Tony Stark",
     author_email="manthirajak@gmail.com",
     description="Dynamic learning technique allows the user to train a model in batch wise manner",

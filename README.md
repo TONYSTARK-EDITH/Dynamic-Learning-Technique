@@ -2,7 +2,6 @@
 
 Dynamic learning technique allows the user to train a model in batch wise manner
 
-
 ## Installation
 
 Use the package manager [pip](https://pip.pypa.io/en/stable/) to install Exchange Rate Api
@@ -25,15 +24,30 @@ DLT(['X dataset'], ['Y dataset'], DecisionTreeRegressor())
 
 ## Features
 
+- ## **Algorithms Supported**
+  New supported algorithms has been included
+    - RandomForestClassifier
+    - DecisionTreeClassifier
+    - SVC
+    - RandomForestRegressor
+    - DecisionTreeRegressor
+    - LinearRegression
+    - LogisticRegression
+    - SVR
+    - Ridge
+    - Lasso
+
 - ## **Exception**
   New exceptions has been included
     - NoArgumentException
     - InvalidMachineLearningModel
     - InvalidDatasetProvided
+    - BatchCountGreaterThanBatchSize
 
 
 - ## **Parallel Processing**
-  -  The splitting process has been made an asynchronous process in order to increase the speed of the splitting process
+    - The splitting process has been made an asynchronous process in order to increase the speed of the splitting
+      process
 
 Test cases has been included
 

@@ -1,6 +1,7 @@
 from enum import Enum
+
 from sklearn.ensemble import RandomForestRegressor, RandomForestClassifier
-from sklearn.linear_model import LinearRegression, LogisticRegression
+from sklearn.linear_model import LinearRegression, LogisticRegression, Ridge, Lasso
 from sklearn.svm import SVC, SVR
 from sklearn.tree import DecisionTreeClassifier, DecisionTreeRegressor
 
@@ -12,5 +13,7 @@ class Utils(Enum):
     REGRESSOR = "Regression"
     CLASSIFIER = "Classification"
     VALID_CLASSIFIERS = (RandomForestClassifier, DecisionTreeClassifier, SVC)
-    VALID_REGRESSORS = (RandomForestRegressor, DecisionTreeRegressor, LinearRegression, LogisticRegression, SVR)
+    VALID_REGRESSORS = (
+        RandomForestRegressor, DecisionTreeRegressor, LinearRegression, LogisticRegression, SVR, Ridge, Lasso
+    )
     VALID_MODEL = VALID_REGRESSORS + VALID_CLASSIFIERS
