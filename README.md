@@ -18,8 +18,16 @@ The DLT takes 2 argument with 6 optional arguments
 # Initialize an object to DLT
 from DLT import *
 from sklearn.tree import DecisionTreeRegressor
+import asyncio
 
-DLT(['X dataset'], ['Y dataset'], DecisionTreeRegressor())
+
+async def main():
+    obj = DLT(['X dataset'], ['Y dataset'], DecisionTreeRegressor())
+    await obj.start()
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
 ```
 
 ## Features

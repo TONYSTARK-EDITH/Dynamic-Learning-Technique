@@ -6,7 +6,7 @@ from .Exceptions import *
 from .utils import Utils
 
 
-class Splitter:
+class Splitter(object):
 
     def __init__(self, model: object, batch_size: int, logger: logging):
         self.logger = logger
@@ -15,8 +15,10 @@ class Splitter:
         self._batch_list = tuple()
         self._base_model = None
         self._model_class = Utils.REGRESSOR
-        asyncio.run(self._find_the_base_class())
-        asyncio.run(self._bootstrap())
+
+    async def run(self):
+        await self._find_the_base_class()
+        await self._bootstrap()
 
     async def _batch_model(self, args):
         args["__init__"] = self.model.__init__  # Adding the __init__ of the base_model

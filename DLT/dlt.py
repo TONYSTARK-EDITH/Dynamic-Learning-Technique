@@ -50,6 +50,12 @@ class DLT(object):
             self._render_model_file()
         else:
             self._model = model_object
+
+        if model_object.__class__ not in Utils.VALID_MODEL.value:
+            LOGGER.error("There is no valid ml model for DLT")
+            raise InvalidMachineLearningModel(
+                f"{self.model.__class__} is not a valid ML model for DLT.\nValid models are {Utils.VALID_MODEL.value}"
+            )
         if batch < count_per_batch:
             LOGGER.error("Value error -- Please make sure the count_per_batch is less than or equal to the batch size")
             raise BatchCountGreaterThanBatchSize(
@@ -82,7 +88,9 @@ class DLT(object):
                 self.x_test)) if self.model.__class__ in Utils.VALID_REGRESSORS.value else accuracy_score(
                 y_true=self.y_test, y_pred=self.model.predict(self.x_test))
             LOGGER.info("Base accuracy has been calculated")
-        self._split_models_into_batches()
+
+    async def start(self):
+        await self._split_models_into_batches()
 
     def _render_model_file(self):
         LOGGER.info("Ml file deserialization process started")
@@ -105,8 +113,9 @@ class DLT(object):
                 excerpt = slice(idx, idx + batch_size)
                 yield src[excerpt], targets[excerpt]
 
-    def _split_models_into_batches(self) -> None:
+    async def _split_models_into_batches(self) -> None:
         obj = Splitter(self.model, self.batch_size, LOGGER)
+        await obj.run()
         LOGGER.info("Batch models has been successfully created")
         self._sub_hash_map = dict(obj.batch_list)
         LOGGER.info("Batch models has been stored in the hash map")
