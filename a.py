@@ -1,18 +1,26 @@
-import asyncio
-
-from sklearn.datasets import load_iris
-
-from DLT import *
+import abc
+from abc import ABC
 
 
-async def main():
-    x, y = load_iris(return_X_y=True)
-    for i in Utils.VALID_MODEL.value:
-        refined = DLT(x, y, i(), is_trained=False, verbose=True)
-        await refined.start()
-        print(refined.refined_model.predict([[1, 2, 3, 4]]))
-        print(refined)
+def main():
+    class A(abc.ABC):
+        def __init__(self):
+            self.__a = 1
+
+        @abc.abstractmethod
+        def abstract(self):
+            print(self.__a)
+
+    class B(A, ABC):
+        def __init__(self):
+            super(B, self).__init__()
+            self.__b = 1
+
+        def abstract(self):
+            print(self.__b)
+
+    print(dir(A()))
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    main()
